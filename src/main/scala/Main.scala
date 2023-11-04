@@ -11,14 +11,16 @@ object Main {
   val logger: Logger = LoggerFactory.getLogger(Main.getClass)
   val conf: SparkConf = new SparkConf().setAppName(NGSConstants.SPARK_JOB_NAME).setMaster(NGSConstants.RUNNING_LOCALLY)
 //  AWS EMR
-//  val conf: SparkConf = new SparkConf().setAppName("Random Walks").setMaster("local[4]")
+//  val conf: SparkConf = new SparkConf().setAppName("Random Walks")
 
   val sc = new SparkContext(conf)
 
   // Deserializing graphs from json
-  // Change outputDirectory to NGSConstants.AWS to run on AWS
   val (ogNodes, _) = Deserializer.loadGraph(NGSConstants.outputDirectory, NGSConstants.ORIGINAL_GRAPH)
   val (perturbedNodes, perturbedEdges) = Deserializer.loadGraph(NGSConstants.outputDirectory, NGSConstants.PERTURBED_GRAPH)
+//  AWS EMR
+//  val (ogNodes, _) = Deserializer.loadGraph(NGSConstants.AWS, NGSConstants.ORIGINAL_GRAPH)
+//  val (perturbedNodes, perturbedEdges) = Deserializer.loadGraph(NGSConstants.AWS, NGSConstants.PERTURBED_GRAPH)
 
   // numIters stores the maximum number of iterations of random walks
   val numIters = Array.range(1, 5)
@@ -44,8 +46,9 @@ object Main {
   outputParser.initializeNodeMatrix()
 
   // Let's parse the difference.yaml file which contains the actual differences between the graphs
-  // Change outputDirectory to NGSConstants.AWS to run on AWS
   outputParser.parseGoldenYAML(NGSConstants.outputDirectory, NGSConstants.GOLDEN_YAML)
+//    AWS EMR
+//  outputParser.parseGoldenYAML(NGSConstants.AWS, NGSConstants.GOLDEN_YAML)
 
   // This function executes random walks in parallel
   // outputParser decides whether to continue iterating or not
