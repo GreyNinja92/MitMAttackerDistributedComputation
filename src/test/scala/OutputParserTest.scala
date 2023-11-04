@@ -20,7 +20,7 @@ class OutputParserTest extends AnyFlatSpec with Matchers with MockitoSugar{
   it should "read YAML" in {
     val yaml = mock[Yaml]
     val fileWriter = mock[FileWriter]
-    outputParser.parseGoldenYAML(NGSConstants.GOLDEN_YAML)
+    outputParser.parseGoldenYAML(NGSConstants.outputDirectory, NGSConstants.GOLDEN_YAML)
 
     verify(yaml).load(_: String)
   }

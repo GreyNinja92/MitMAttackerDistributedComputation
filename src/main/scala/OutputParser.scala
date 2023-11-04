@@ -137,8 +137,8 @@ class OutputParser(size1: Int, size2: Int, originalNodes: List[NodeObject]) {
     val fraction = (gtl - btl) / (2 * rtl).toFloat
     val vpr = fraction + 0.5f
 
-    val successfulAttacks = nodeUnchanged.intersect(valuableNodes) ++ nodeModified.intersect(valuableNodes)
-    val unsuccessfulAttacks = valuableNodes.filter { node => !nodeUnchanged.contains(node) || !nodeModified.contains(node) }
+    val successfulAttacks = (nodeUnchanged.intersect(valuableNodes) ++ nodeModified.intersect(valuableNodes)).size
+    val unsuccessfulAttacks = valuableNodes.size - successfulAttacks
 
     logger.info("GTL : " + gtl)
     logger.info("BTL : " + btl)
@@ -149,7 +149,7 @@ class OutputParser(size1: Int, size2: Int, originalNodes: List[NodeObject]) {
 
     logger.info("Attack Statistics")
     logger.info("Iterations : " + iter)
-    logger.info("Successful Attacks : " + successfulAttacks.size)
-    logger.info("Unsuccessful Attacks : " + unsuccessfulAttacks.size)
+    logger.info("Successful Attacks : " + successfulAttacks)
+    logger.info("Unsuccessful Attacks : " + unsuccessfulAttacks)
   }
 }

@@ -16,8 +16,9 @@ object Main {
   val sc = new SparkContext(conf)
 
   // Deserializing graphs from json
-  val (ogNodes, _) = Deserializer.loadGraph(NGSConstants.AWS, NGSConstants.ORIGINAL_GRAPH)
-  val (perturbedNodes, perturbedEdges) = Deserializer.loadGraph(NGSConstants.AWS, NGSConstants.PERTURBED_GRAPH)
+  // Change outputDirectory to NGSConstants.AWS to run on AWS
+  val (ogNodes, _) = Deserializer.loadGraph(NGSConstants.outputDirectory, NGSConstants.ORIGINAL_GRAPH)
+  val (perturbedNodes, perturbedEdges) = Deserializer.loadGraph(NGSConstants.outputDirectory, NGSConstants.PERTURBED_GRAPH)
 
   // numIters stores the maximum number of iterations of random walks
   val numIters = Array.range(1, 5)
@@ -43,7 +44,8 @@ object Main {
   outputParser.initializeNodeMatrix()
 
   // Let's parse the difference.yaml file which contains the actual differences between the graphs
-  outputParser.parseGoldenYAML(NGSConstants.AWS, NGSConstants.GOLDEN_YAML)
+  // Change outputDirectory to NGSConstants.AWS to run on AWS
+  outputParser.parseGoldenYAML(NGSConstants.outputDirectory, NGSConstants.GOLDEN_YAML)
 
   // This function executes random walks in parallel
   // outputParser decides whether to continue iterating or not
