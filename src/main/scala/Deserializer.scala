@@ -16,33 +16,19 @@ object Deserializer {
   val logger: Logger = LoggerFactory.getLogger(Deserializer.getClass)
 
   def loadGraph(dir: String, fileName: String): (List[NodeObject], List[Action]) = {
+    // Using Hadoop FileSystem and InputStream for both AWS & Local Machine
     val conf = new Configuration()
-    println("BEING CALLED")
 //    AWS EMR
-    val fileSystem = FileSystem.get(java.net.URI.create(dir), conf)
-//    val fileSystem = FileSystem.get(conf)
+//    val fileSystem = FileSystem.get(java.net.URI.create(dir), conf)
+    val fileSystem = FileSystem.get(conf)
     val fsDataInputStream = fileSystem.open(new Path(dir.concat(fileName)))
+    // Loading json and converting them to strings
     val json = Source.fromInputStream(fsDataInputStream).mkString
-    val arr = json.split("\n")
+    val arr = json.split(NGSConstants.NEW_LINE)
+    // After splitting the strings, we initialize node & edge arrays and return them
     val nodeArr = decode[Set[NodeObject]](arr.head).right.get
     val edgeArr = decode[Set[Action]](arr.last).right.get
 
     (nodeArr.toList.distinct, edgeArr.toList.distinct)
-
-//    Try(new FileInputStream(s"$outputDirectory$fileName")).map { fis =>
-//      val ois = new ObjectInputStream(fis)
-//      val ng = ois.readObject.asInstanceOf[List[NetGraphComponent]]
-//      logger.info(s"Deserialized the object $ng")
-//      ois.close()
-//      fis.close()
-//      ng
-//    } match {
-//      case Success(lstOfNetComponents) =>
-//        nodes ++= lstOfNetComponents.collect { case node: NodeObject => node }
-//        edges ++= lstOfNetComponents.collect { case edge: Action => edge }
-//        logger.info(s"Deserialized ${nodes.length} nodes and ${edges.length} edges")
-//      case Failure(exception) => logger.error(s"Failed to deserialize due to this error : ${exception}")
-//    }
-//    (nodes.toList.distinct, edges.toList.distinct)
   }
 }

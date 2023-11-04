@@ -1,6 +1,7 @@
 package NetGraphAlgebraDefs
 import java.io.Serializable
 
+// Case classes used for deserialization of graphs stored in json format
 trait NetGraphComponent extends Serializable
 
 @SerialVersionUID(123L)
