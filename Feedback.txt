@@ -1,0 +1,6 @@
+Student: Saksham Khatod
+
+Good job! I can see that you have a good understanding of Spark and how to use it on AWS.
+Keep it up!
+
+Final Grade: 15%
